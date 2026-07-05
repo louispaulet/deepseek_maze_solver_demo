@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { ALGORITHMS } from '../algorithms/constants';
 import { PATHFINDING_ALGORITHMS } from '../algorithms/pathfindingConstants';
 import useAnimation from '../hooks/useAnimation';
+import { useToast } from '../components/ToastProvider';
 import MazeControls from '../components/MazeControls';
 import SolverControls from '../components/SolverControls';
 import AnimationControls from '../components/AnimationControls';
@@ -20,6 +21,7 @@ export default function MazeSolver() {
   const [results, setResults] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [solving, setSolving] = useState(false);
+  const toast = useToast();
 
   const maxStep = results
     ? Math.max(...Object.values(results).map((r) => r.visitedOrder.length))
@@ -52,12 +54,12 @@ export default function MazeSolver() {
       setResults(newResults);
       setSolving(false);
       anim.reset();
+      const allEmpty = Object.values(newResults).every((r) => r.path.length === 0);
+      if (allEmpty) toast('No path found — maze may be unsolvable.', 'error');
     }, 0);
-  }, [mazeGrid, selectedAlgos]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  }, [mazeGrid, selectedAlgos, toast]);
   const selectedKeys = [...selectedAlgos];
   const selectedLabels = selectedKeys.map((k) => PATHFINDING_ALGORITHMS[k].label);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">
