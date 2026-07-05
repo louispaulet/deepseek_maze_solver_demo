@@ -1,15 +1,56 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+
+const MAX_CELL_SIZE = 40;
+const MIN_CELL_SIZE = 4;
+const FALLBACK_CELL_SIZE = 20;
 
 /**
  * Renders a maze grid on an HTML Canvas, with optional pathfinding overlay.
+ * When `cellSize` is omitted, the canvas auto-scales to fill its container width.
  */
-export default function MazeCanvas({ grid, cellSize = 20, visitedOrder, path }) {
+export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const [dynamicSize, setDynamicSize] = useState(FALLBACK_CELL_SIZE);
   const rows = grid.length;
   const cols = grid[0].length;
-  const width = cols * cellSize;
-  const height = rows * cellSize;
+
+  const computeSize = useCallback(() => {
+    if (cellSize !== undefined) return cellSize;
+    if (!containerRef.current) return FALLBACK_CELL_SIZE;
+    const containerWidth = containerRef.current.clientWidth;
+    if (containerWidth === 0) return FALLBACK_CELL_SIZE;
+    const raw = Math.floor(containerWidth / cols);
+    return Math.min(Math.max(raw, MIN_CELL_SIZE), MAX_CELL_SIZE);
+  }, [cellSize, cols]);
+
+  // Track container width with ResizeObserver (fallback to static size if unavailable)
+  useEffect(() => {
+    if (cellSize !== undefined) {
+      setDynamicSize(cellSize);
+      return;
+    }
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (typeof ResizeObserver === 'undefined') {
+      setDynamicSize(computeSize());
+      return;
+    }
+
+    const observer = new ResizeObserver(() => {
+      setDynamicSize(computeSize());
+    });
+    observer.observe(container);
+    setDynamicSize(computeSize());
+
+    return () => observer.disconnect();
+  }, [computeSize, cellSize]);
+
+  const width = cols * dynamicSize;
+  const height = rows * dynamicSize;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -68,14 +109,27 @@ export default function MazeCanvas({ grid, cellSize = 20, visitedOrder, path }) 
     // Goal cell (red)
     ctx.fillStyle = '#ef4444';
     ctx.fillRect((cols - 1) * cellSize + 1, (rows - 1) * cellSize + 1, cellSize - 2, cellSize - 2);
-  }, [grid, cellSize, rows, cols, width, height, visitedOrder, path]);
+  }, [grid, dynamicSize, rows, cols, width, height, visitedOrder, path]);
+
+  // When a fixed cellSize is given, render the canvas directly to stay backward-compatible
+  if (cellSize !== undefined) {
+    return (
+      <canvas
+        ref={canvasRef}
+        className="rounded-lg border border-gray-700 shadow-lg"
+        style={{ width, height }}
+      />
+    );
+  }
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="rounded-lg border border-gray-700 shadow-lg"
-      style={{ width, height }}
-    />
+    <div ref={containerRef} className="w-full">
+      <canvas
+        ref={canvasRef}
+        className="rounded-lg border border-gray-700 shadow-lg"
+        style={{ width, height }}
+      />
+    </div>
   );
 }
 

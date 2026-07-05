@@ -82,7 +82,7 @@ export default function MazeSolver() {
             return (
               <div key={key} className="flex flex-col items-center">
                 <span className="text-sm font-medium text-indigo-400 mb-2">{label}</span>
-                <MazeCanvas grid={mazeGrid} cellSize={14}
+                <MazeCanvas grid={mazeGrid}
                   visitedOrder={visible} path={anim.isComplete ? path : []} />
                 <div className="flex gap-4 mt-1.5 text-xs text-gray-400">
                   <span>Visited: {visible.length}/{visitedOrder.length}</span>

@@ -14,7 +14,7 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 - [x] Create a `<Maze />` component that renders the grid on an HTML5 `<canvas>`
 - [x] Draw walls, passages, start cell, and goal cell with distinct colors
-- [ ] Support dynamic resizing (canvas scales with container)
+- [x] Support dynamic resizing (canvas scales with container)
 - [ ] Animate maze generation step-by-step (optional toggle)
 
 ## Pathfinding Algorithms
