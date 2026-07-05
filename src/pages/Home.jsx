@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { GENERATION_ALGOS, PATHFINDING_ALGOS, FEATURES } from './homeData';
+import HeroDecoration from '../assets/illustrations/HeroDecoration';
+import { GenerateIcon, PathfindIcon, FeaturesIcon } from '../assets/icons/SectionIcons';
 
 export default function Home() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16 space-y-20">
       {/* Hero */}
       <section className="text-center space-y-6">
+        <HeroDecoration />
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
           DeepSeek <span className="text-indigo-400">Maze Solver</span>
         </h1>
@@ -31,7 +34,7 @@ export default function Home() {
       </section>
 
       {/* Maze Generation */}
-      <Section title="Maze" highlight="Generation">
+      <Section title="Maze" highlight="Generation" icon={<GenerateIcon />}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {GENERATION_ALGOS.map(({ title, desc }) => (
             <div key={title}
@@ -44,7 +47,7 @@ export default function Home() {
       </Section>
 
       {/* Pathfinding */}
-      <Section title="Pathfinding" highlight="Comparison">
+      <Section title="Pathfinding" highlight="Comparison" icon={<PathfindIcon />}>
         <p className="text-gray-400 text-center max-w-2xl mx-auto mb-8">
           Select up to four algorithms and run them side-by-side on the same
           maze. Watch each one explore the grid cell by cell, and compare
@@ -67,7 +70,7 @@ export default function Home() {
       </Section>
 
       {/* Features */}
-      <Section title="Other" highlight="Features">
+      <Section title="Other" highlight="Features" icon={<FeaturesIcon />}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {FEATURES.map(({ title, desc }) => (
             <div key={title}
@@ -101,10 +104,11 @@ export default function Home() {
   );
 }
 
-function Section({ title, highlight, children }) {
+function Section({ title, highlight, children, icon }) {
   return (
     <section>
-      <h2 className="text-2xl font-bold text-white text-center mb-8">
+      <h2 className="text-2xl font-bold text-white text-center mb-8 flex items-center justify-center gap-3">
+        {icon}
         {title} <span className="text-indigo-400">{highlight}</span>
       </h2>
       {children}
@@ -115,4 +119,5 @@ Section.propTypes = {
   title: PropTypes.string.isRequired,
   highlight: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  icon: PropTypes.node,
 };

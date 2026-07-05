@@ -1,3 +1,5 @@
+import MazeIcon from '../assets/icons/MazeIcon';
+
 const GEN = [
   {
     name: 'Recursive Backtracking',
@@ -36,7 +38,10 @@ export default function About() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-16">
       <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">
-        About This <span className="text-indigo-400">Project</span>
+        <span className="inline-flex items-center gap-3">
+          <MazeIcon size={32} className="text-indigo-400" />
+          About This <span className="text-indigo-400">Project</span>
+        </span>
       </h1>
 
       <section className="space-y-5 text-gray-300 leading-relaxed">
