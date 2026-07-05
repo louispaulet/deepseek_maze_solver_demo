@@ -8,3 +8,8 @@
 @utility animate-slide-in {
   animation: slide-in 0.3s ease-out;
 }
+
+@utility bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
