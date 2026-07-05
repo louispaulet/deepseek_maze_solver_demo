@@ -11,7 +11,7 @@ const FALLBACK_CELL_SIZE = 20;
 const BG_COLOR = '#030712';
 const WALL_COLOR = '#818cf8';
 const VISITED_COLOR = '#facc15';
-const PATH_COLOR = '#ef4444';
+const PATH_COLOR = '#991b1b';
 const START_COLOR = '#22c55e';
 const GOAL_COLOR = '#ef4444';
 
