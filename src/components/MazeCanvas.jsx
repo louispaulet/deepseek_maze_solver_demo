@@ -10,8 +10,8 @@ const FALLBACK_CELL_SIZE = 20;
 //   green-500 (#22c55e), red-500 (#ef4444)
 const BG_COLOR = '#030712';
 const WALL_COLOR = '#818cf8';
-const VISITED_COLOR = 'rgba(129, 140, 248, 0.25)';
-const PATH_COLOR = '#facc15';
+const VISITED_COLOR = '#facc15';
+const PATH_COLOR = '#ef4444';
 const START_COLOR = '#22c55e';
 const GOAL_COLOR = '#ef4444';
 
