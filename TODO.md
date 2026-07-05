@@ -55,7 +55,7 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 - [x] Add Vitest as test runner (replace echo placeholder)
 - [x] Add `make test` wired to `vitest run`
-- [ ] CI via GitHub Actions (lint + test on push)
+- [x] CI via GitHub Actions (lint + test on push)
 
 ---
 
