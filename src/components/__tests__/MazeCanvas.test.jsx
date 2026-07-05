@@ -41,6 +41,6 @@ describe('MazeCanvas', () => {
     render(<MazeCanvas grid={makeGrid(2, 2)} />);
     const canvas = document.querySelector('canvas');
     expect(canvas.className).toContain('rounded-lg');
-    expect(canvas.className).toContain('border-gray-700');
+    expect(canvas.className).toContain('border-gray-800');
   });
 });

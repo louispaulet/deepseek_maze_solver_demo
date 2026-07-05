@@ -5,6 +5,16 @@ const MAX_CELL_SIZE = 40;
 const MIN_CELL_SIZE = 4;
 const FALLBACK_CELL_SIZE = 20;
 
+// Dark-theme canvas colours matching the Tailwind palette:
+//   bg-gray-950 (#030712), indigo-400 (#818cf8), yellow-400 (#facc15),
+//   green-500 (#22c55e), red-500 (#ef4444)
+const BG_COLOR = '#030712';
+const WALL_COLOR = '#818cf8';
+const VISITED_COLOR = 'rgba(129, 140, 248, 0.25)';
+const PATH_COLOR = '#facc15';
+const START_COLOR = '#22c55e';
+const GOAL_COLOR = '#ef4444';
+
 /**
  * Renders a maze grid on an HTML Canvas, with optional pathfinding overlay.
  * When `cellSize` is omitted, the canvas auto-scales to fill its container width.
@@ -66,12 +76,12 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     ctx.scale(dpr, dpr);
 
     // Background
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, width, height);
 
     // Visited cells overlay
     if (visitedOrder && visitedOrder.length > 0) {
-      ctx.fillStyle = 'rgba(99, 102, 241, 0.25)';
+      ctx.fillStyle = VISITED_COLOR;
       for (const { row, col } of visitedOrder) {
         ctx.fillRect(col * cellSize + 1, row * cellSize + 1, cellSize - 2, cellSize - 2);
       }
@@ -79,14 +89,14 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
 
     // Path overlay
     if (path && path.length > 0) {
-      ctx.fillStyle = '#facc15';
+      ctx.fillStyle = PATH_COLOR;
       for (const { row, col } of path) {
         ctx.fillRect(col * cellSize + 1, row * cellSize + 1, cellSize - 2, cellSize - 2);
       }
     }
 
     // Draw walls
-    ctx.strokeStyle = '#6366f1';
+    ctx.strokeStyle = WALL_COLOR;
     ctx.lineWidth = 2;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -103,11 +113,11 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     }
 
     // Start cell (green)
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = START_COLOR;
     ctx.fillRect(1, 1, cellSize - 2, cellSize - 2);
 
     // Goal cell (red)
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = GOAL_COLOR;
     ctx.fillRect((cols - 1) * cellSize + 1, (rows - 1) * cellSize + 1, cellSize - 2, cellSize - 2);
   }, [grid, dynamicSize, rows, cols, width, height, visitedOrder, path]);
 
@@ -116,7 +126,7 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     return (
       <canvas
         ref={canvasRef}
-        className="rounded-lg border border-gray-700 shadow-lg"
+        className="rounded-lg border border-gray-800 shadow-lg"
         style={{ width, height }}
       />
     );
@@ -126,7 +136,7 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     <div ref={containerRef} className="w-full">
       <canvas
         ref={canvasRef}
-        className="rounded-lg border border-gray-700 shadow-lg"
+        className="rounded-lg border border-gray-800 shadow-lg"
         style={{ width, height }}
       />
     </div>
