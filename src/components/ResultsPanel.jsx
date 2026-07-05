@@ -48,8 +48,11 @@ export default function ResultsPanel({
 
   if (mazeGrid) {
     return (
-      <div className="mt-6 rounded-xl border border-gray-800 bg-gray-900/50 p-8 text-center text-gray-500">
-        Select algorithms above and click <span className="text-emerald-400">Solve Maze</span>
+      <div className="mt-6 flex flex-col items-center gap-4">
+        <MazeCanvas grid={mazeGrid} />
+        <p className="text-sm text-gray-500">
+          Select algorithms above and click <span className="text-emerald-400">Solve Maze</span>
+        </p>
       </div>
     );
   }

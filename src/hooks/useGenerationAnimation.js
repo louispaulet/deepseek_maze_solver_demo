@@ -7,7 +7,7 @@ import useAnimation from './useAnimation';
  * Manages the steps array, intermediate grid, and playback control.
  */
 export default function useGenerationAnimation(rows, cols) {
-  const [animateGen, setAnimateGen] = useState(true);
+  const [animateGen, setAnimateGen] = useState(false);
   const [genSteps, setGenSteps] = useState(null);
   const genAnim = useAnimation(genSteps ? genSteps.length : 0);
 
