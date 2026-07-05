@@ -79,11 +79,13 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, width, height);
 
+    const size = dynamicSize;
+
     // Visited cells overlay
     if (visitedOrder && visitedOrder.length > 0) {
       ctx.fillStyle = VISITED_COLOR;
       for (const { row, col } of visitedOrder) {
-        ctx.fillRect(col * cellSize + 1, row * cellSize + 1, cellSize - 2, cellSize - 2);
+        ctx.fillRect(col * size + 1, row * size + 1, size - 2, size - 2);
       }
     }
 
@@ -91,7 +93,7 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     if (path && path.length > 0) {
       ctx.fillStyle = PATH_COLOR;
       for (const { row, col } of path) {
-        ctx.fillRect(col * cellSize + 1, row * cellSize + 1, cellSize - 2, cellSize - 2);
+        ctx.fillRect(col * size + 1, row * size + 1, size - 2, size - 2);
       }
     }
 
@@ -100,25 +102,25 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     ctx.lineWidth = 2;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const x = c * cellSize;
-        const y = r * cellSize;
+        const x = c * size;
+        const y = r * size;
         const { top, right, bottom, left } = grid[r][c].walls;
         ctx.beginPath();
-        if (top)    { ctx.moveTo(x, y); ctx.lineTo(x + cellSize, y); }
-        if (right)  { ctx.moveTo(x + cellSize, y); ctx.lineTo(x + cellSize, y + cellSize); }
-        if (bottom) { ctx.moveTo(x, y + cellSize); ctx.lineTo(x + cellSize, y + cellSize); }
-        if (left)   { ctx.moveTo(x, y); ctx.lineTo(x, y + cellSize); }
+        if (top)    { ctx.moveTo(x, y); ctx.lineTo(x + size, y); }
+        if (right)  { ctx.moveTo(x + size, y); ctx.lineTo(x + size, y + size); }
+        if (bottom) { ctx.moveTo(x, y + size); ctx.lineTo(x + size, y + size); }
+        if (left)   { ctx.moveTo(x, y); ctx.lineTo(x, y + size); }
         ctx.stroke();
       }
     }
 
     // Start cell (green)
     ctx.fillStyle = START_COLOR;
-    ctx.fillRect(1, 1, cellSize - 2, cellSize - 2);
+    ctx.fillRect(1, 1, size - 2, size - 2);
 
     // Goal cell (red)
     ctx.fillStyle = GOAL_COLOR;
-    ctx.fillRect((cols - 1) * cellSize + 1, (rows - 1) * cellSize + 1, cellSize - 2, cellSize - 2);
+    ctx.fillRect((cols - 1) * size + 1, (rows - 1) * size + 1, size - 2, size - 2);
   }, [grid, dynamicSize, rows, cols, width, height, visitedOrder, path]);
 
   // When a fixed cellSize is given, render the canvas directly to stay backward-compatible
