@@ -16,4 +16,4 @@ build:
 deploy:
 	npm run build
 	cp public/CNAME dist/CNAME
-	npx gh-pages -d dist
+	npx gh-pages -d dist --dotfiles
