@@ -44,11 +44,10 @@ export default function MazeSolver() {
   }, [mazeGrid, selectedAlgos]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const algoKeys = results ? Object.keys(results) : [];
-  const gridCols = algoKeys.length <= 2 ? algoKeys.length : 2;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-extrabold tracking-tight mb-6">
+      <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">
         Maze <span className="text-indigo-400">Solver</span>
       </h1>
 
@@ -74,8 +73,7 @@ export default function MazeSolver() {
       )}
 
       {results ? (
-        <div className="mt-6 grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}>
+        <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {algoKeys.map((key) => {
             const { visitedOrder, path, label } = results[key];
             const visible = visitedOrder.slice(0, Math.min(anim.step, visitedOrder.length));

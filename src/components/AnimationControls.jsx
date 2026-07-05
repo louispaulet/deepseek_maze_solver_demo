@@ -10,10 +10,11 @@ export default function AnimationControls({
 
   return (
     <div className="mt-6 border-t border-gray-800 pt-4">
-      <div className="flex flex-wrap items-center gap-3">
+      {/* Buttons row */}
+      <div className="flex flex-wrap items-center gap-3 mb-3">
         <button
           onClick={isPlaying ? onPause : onPlay}
-          className="rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition-colors"
+          className="rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors"
           title={isPlaying ? 'Pause' : 'Play'}
         >
           {isPlaying ? '⏸ Pause' : '▶ Play'}
@@ -22,7 +23,7 @@ export default function AnimationControls({
         <button
           onClick={onStep}
           disabled={step >= maxStep}
-          className="rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 disabled:opacity-40 px-3 py-2 text-sm text-gray-200 transition-colors"
+          className="rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 disabled:opacity-40 px-4 py-2.5 text-sm text-gray-200 transition-colors"
           title="Step forward"
         >
           ⏭ Step
@@ -31,24 +32,27 @@ export default function AnimationControls({
         <button
           onClick={onReset}
           disabled={step === 0}
-          className="rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 disabled:opacity-40 px-3 py-2 text-sm text-gray-200 transition-colors"
+          className="rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 disabled:opacity-40 px-4 py-2.5 text-sm text-gray-200 transition-colors"
           title="Reset"
         >
           ↺ Reset
         </button>
+      </div>
 
-        <div className="flex items-center gap-2 ml-auto">
-          <span className="text-xs text-gray-500 w-10 text-right">{pct}%</span>
+      {/* Sliders row */}
+      <div className="flex flex-wrap items-center gap-4">
+        <label className="flex items-center gap-2 text-xs text-gray-400">
+          <span className="text-gray-500 w-10 text-right">{pct}%</span>
           <input
             type="range"
             min={0}
             max={maxStep}
             value={step}
             onChange={(e) => onStep(Number(e.target.value))}
-            className="w-32 accent-indigo-500"
+            className="w-32 sm:w-40 accent-indigo-500"
             title="Scrub timeline"
           />
-        </div>
+        </label>
 
         <label className="flex items-center gap-1.5 text-xs text-gray-400">
           Speed
@@ -58,7 +62,7 @@ export default function AnimationControls({
             max={200}
             value={210 - speed}
             onChange={(e) => onSpeedChange(210 - Number(e.target.value))}
-            className="w-20 accent-indigo-500"
+            className="w-20 sm:w-24 accent-indigo-500"
           />
           <span className="w-8 text-gray-500">{speed}ms</span>
         </label>

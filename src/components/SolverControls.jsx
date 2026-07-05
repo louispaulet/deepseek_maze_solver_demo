@@ -21,7 +21,7 @@ export default function SolverControls({ selected, setSelected, onSolve, hasMaze
         {Object.entries(PATHFINDING_ALGORITHMS).map(([key, { label }]) => (
           <label
             key={key}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer text-sm transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer text-sm transition-colors ${
               selected.has(key)
                 ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300'
                 : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600'
