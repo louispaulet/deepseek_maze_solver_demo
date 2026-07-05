@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const links = [
   { to: '/', label: 'Home' },
+  { to: '/maze-solver', label: 'Maze Solver' },
   { to: '/about', label: 'About' },
 ];
 

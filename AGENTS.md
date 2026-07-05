@@ -36,11 +36,20 @@ deepseek_maze_solver_demo/
 ├── src/
 │   ├── components/              # Reusable UI components (max ~70-100 lines each)
 │   │   ├── Footer.jsx           # 11 lines — site footer
-│   │   └── Navbar.jsx           # 36 lines — sticky top navbar
+│   │   ├── Navbar.jsx           # 36 lines — sticky top navbar
+│   │   ├── MazeCanvas.jsx       # Canvas-based maze renderer
+│   │   └── MazeControls.jsx     # Algorithm/size/seed controls
 │   ├── pages/                   # Route-level views (max ~70-100 lines each)
 │   │   ├── About.jsx            # 48 lines — about page
-│   │   └── Home.jsx             # 53 lines — landing page
+│   │   ├── Home.jsx             # 53 lines — landing page
+│   │   └── MazeSolver.jsx       # Maze solver demo page
 │   ├── algorithms/              # Maze generation & pathfinding algorithm logic
+│   │   ├── constants.js         # Algorithm registry
+│   │   ├── mazeGenerator.js     # Re-exports all generators
+│   │   ├── mazeUtils.js         # createGrid, shuffle, PRNG helpers
+│   │   ├── prim.js              # Prim's algorithm
+│   │   ├── recursiveBacktracking.js  # Recursive Backtracking algorithm
+│   │   └── __tests__/           # Unit tests for all algorithm modules
 │   ├── App.jsx                  # 20 lines — root component with Routes
 │   ├── index.css                # 1 line — TailwindCSS import
 │   └── main.jsx                 # 13 lines — entry point, HashRouter setup
@@ -65,10 +74,18 @@ deepseek_maze_solver_demo/
 
 ## Component & Page Conventions
 
-- **All files must stay between 70–100 lines.** If a component grows beyond that, extract sub-components or utility functions into separate files.
+- **All files must stay between 70–100 lines.** This applies to every file in `src/` — components, pages, algorithms, utilities, and tests. If a file grows beyond that, extract sub-components, helpers, or split tests into separate test files.
 - **Pages** (`src/pages/`) handle full views tied to a route. They compose UI from components in `src/components/`.
 - **Components** (`src/components/`) are reusable, presentational pieces (Navbar, Footer, buttons, cards, etc.).
 - **Algorithms** (`src/algorithms/`) contain pure logic — no React, no DOM. Import them into pages or components as needed.
+
+## Testing
+
+- **Test runner**: [Vitest](https://vitest.dev/) with `jsdom` environment.
+- **React testing**: [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) + `@testing-library/jest-dom`.
+- **Test files** go in `__tests__/` directories next to the modules they test.
+- **Each test file** must also respect the 70–100 line limit. Split large test suites into multiple files, one per function/component.
+- Run `make test` to execute the full suite.
 
 ## Styling Conventions
 
