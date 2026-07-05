@@ -9,7 +9,6 @@ function renderMazeSolver() {
 }
 
 async function generateWithoutAnimation() {
-  fireEvent.click(screen.getByRole('checkbox', { name: 'Animate generation' }));
   await clickAndFlush(screen.getByRole('button', { name: 'Generate Maze' }));
 }
 
