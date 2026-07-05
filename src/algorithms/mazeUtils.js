@@ -56,6 +56,21 @@ export function shuffle(arr, random = Math.random) {
 }
 
 /**
+ * Clones a grid (all walls intact) and applies the first `count` wall-removal steps.
+ * Used for animating maze generation step-by-step.
+ */
+export function applySteps(rows, cols, steps, count) {
+  const grid = createGrid(rows, cols);
+  for (let i = 0; i < Math.min(count, steps.length); i++) {
+    const { row, col, wall } = steps[i];
+    if (grid[row] && grid[row][col]) {
+      grid[row][col].walls[wall] = false;
+    }
+  }
+  return grid;
+}
+
+/**
  * Mulberry32 — a fast, seedable 32-bit PRNG.
  * @param {number} seed
  * @returns {() => number} Function returning [0, 1)

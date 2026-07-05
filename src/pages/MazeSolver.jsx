@@ -2,18 +2,18 @@ import { useState, useCallback } from 'react';
 import { ALGORITHMS } from '../algorithms/constants';
 import { PATHFINDING_ALGORITHMS } from '../algorithms/pathfindingConstants';
 import useAnimation from '../hooks/useAnimation';
+import useGenerationAnimation from '../hooks/useGenerationAnimation';
 import { useToast } from '../components/ToastProvider';
 import MazeControls from '../components/MazeControls';
+import MazeCanvas from '../components/MazeCanvas';
 import SolverControls from '../components/SolverControls';
 import AnimationControls from '../components/AnimationControls';
 import ResultsPanel from '../components/ResultsPanel';
 
 export { ALGORITHMS };
-
 export default function MazeSolver() {
   const [algo, setAlgo] = useState('recursive-backtracking');
-  const [rows, setRows] = useState(15);
-  const [cols, setCols] = useState(15);
+  const [rows, setRows] = useState(15);  const [cols, setCols] = useState(15);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 100000));
   const [mazeGrid, setMazeGrid] = useState(null);
   const [showSeed, setShowSeed] = useState(false);
@@ -22,23 +22,23 @@ export default function MazeSolver() {
   const [generating, setGenerating] = useState(false);
   const [solving, setSolving] = useState(false);
   const toast = useToast();
-
   const maxStep = results
     ? Math.max(...Object.values(results).map((r) => r.visitedOrder.length))
     : 0;
   const anim = useAnimation(maxStep);
-
+  const gen = useGenerationAnimation(rows, cols);
   const handleGenerate = () => {
     setGenerating(true);
     setResults(null);
     setMazeGrid(null);
+    gen.setGenSteps(null);
     setTimeout(() => {
-      setMazeGrid(ALGORITHMS[algo].fn(rows, cols, seed).grid);
+      const { grid, steps } = ALGORITHMS[algo].fn(rows, cols, seed);
+      setMazeGrid(grid);
+      if (gen.animateGen) gen.finishGeneration(grid, steps);
       setGenerating(false);
-      anim.reset();
     }, 0);
   };
-
   const handleSolve = useCallback(() => {
     if (!mazeGrid) return;
     setSolving(true);
@@ -54,10 +54,10 @@ export default function MazeSolver() {
       setResults(newResults);
       setSolving(false);
       anim.reset();
-      const allEmpty = Object.values(newResults).every((r) => r.path.length === 0);
-      if (allEmpty) toast('No path found — maze may be unsolvable.', 'error');
+      if (Object.values(newResults).every((r) => r.path.length === 0))
+        toast('No path found — maze may be unsolvable.', 'error');
     }, 0);
-  }, [mazeGrid, selectedAlgos, toast]);
+  }, [mazeGrid, selectedAlgos, toast, anim]);
   const selectedKeys = [...selectedAlgos];
   const selectedLabels = selectedKeys.map((k) => PATHFINDING_ALGORITHMS[k].label);
   return (
@@ -65,36 +65,36 @@ export default function MazeSolver() {
       <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">
         Maze <span className="text-indigo-400">Solver</span>
       </h1>
-
       <MazeControls
         algo={algo} setAlgo={setAlgo} rows={rows} setRows={setRows}
         cols={cols} setCols={setCols} seed={seed} setSeed={setSeed}
         showSeed={showSeed} setShowSeed={setShowSeed}
         onGenerate={handleGenerate} generating={generating}
+        animateGen={gen.animateGen} setAnimateGen={gen.setAnimateGen}
       />
-
-      {mazeGrid && (
-        <SolverControls
-          selected={selectedAlgos} setSelected={setSelectedAlgos}
-          onSolve={handleSolve} hasMaze={!!mazeGrid} solving={solving}
-        />
+      {gen.isAnimating && gen.animatedGrid && (
+        <div className="mt-6 flex flex-col items-center">
+          <span className="text-sm font-medium text-indigo-400 mb-2">
+            Generating… {Math.round((gen.genAnim.step / gen.genSteps.length) * 100)}%</span>
+          <MazeCanvas grid={gen.animatedGrid} />
+        </div>
       )}
-
+      {mazeGrid && !gen.genSteps && (
+        <SolverControls selected={selectedAlgos} setSelected={setSelectedAlgos}
+          onSolve={handleSolve} hasMaze={!!mazeGrid} solving={solving} />
+      )}
       {results && (
         <AnimationControls
           isPlaying={anim.isPlaying} step={anim.step} maxStep={maxStep}
           speed={anim.speed} onPlay={anim.play} onPause={anim.pause}
-          onStep={anim.setStep} onReset={anim.reset} onSpeedChange={anim.setSpeed}
-        />
+          onStep={anim.setStep} onReset={anim.reset} onSpeedChange={anim.setSpeed} />
       )}
-
-      <ResultsPanel
-        generating={generating} solving={solving}
-        results={results} mazeGrid={mazeGrid}
-        rows={rows} cols={cols}
-        selectedKeys={selectedKeys} selectedLabels={selectedLabels}
-        anim={anim}
-      />
+      {!gen.genSteps && (
+        <ResultsPanel
+          generating={generating} solving={solving}
+          results={results} mazeGrid={mazeGrid} rows={rows} cols={cols}
+          selectedKeys={selectedKeys} selectedLabels={selectedLabels} anim={anim} />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { ALGORITHMS } from '../algorithms/constants';
 
-export default function MazeControls({ algo, setAlgo, rows, setRows, cols, setCols, seed, setSeed, showSeed, setShowSeed, onGenerate, generating }) {
+export default function MazeControls({ algo, setAlgo, rows, setRows, cols, setCols, seed, setSeed, showSeed, setShowSeed, onGenerate, generating, animateGen, setAnimateGen }) {
   const cycleSeed = (delta) => setSeed((s) => s + delta);
 
   return (
@@ -39,13 +39,18 @@ export default function MazeControls({ algo, setAlgo, rows, setRows, cols, setCo
 
       <SeedControl seed={seed} setSeed={setSeed} showSeed={showSeed} setShowSeed={setShowSeed} cycleSeed={cycleSeed} />
 
-      <div className="sm:col-span-2 lg:col-span-4">
+      <div className="sm:col-span-2 lg:col-span-4 flex items-center gap-4">
         <button
           onClick={onGenerate}
           disabled={generating}
           className="rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-700 disabled:text-gray-500 px-6 py-2.5 text-sm font-semibold text-white transition-colors"
         >
           {generating ? 'Generating…' : 'Generate Maze'}</button>
+        <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
+          <input type="checkbox" checked={animateGen} onChange={(e) => setAnimateGen(e.target.checked)}
+            className="accent-indigo-500" />
+          Animate generation
+        </label>
       </div>
     </div>
   );
@@ -54,16 +59,13 @@ export default function MazeControls({ algo, setAlgo, rows, setRows, cols, setCo
 MazeControls.propTypes = {
   algo: PropTypes.string.isRequired,
   setAlgo: PropTypes.func.isRequired,
-  rows: PropTypes.number.isRequired,
-  setRows: PropTypes.func.isRequired,
-  cols: PropTypes.number.isRequired,
-  setCols: PropTypes.func.isRequired,
-  seed: PropTypes.number.isRequired,
-  setSeed: PropTypes.func.isRequired,
-  showSeed: PropTypes.bool.isRequired,
-  setShowSeed: PropTypes.func.isRequired,
+  rows: PropTypes.number.isRequired,  cols: PropTypes.number.isRequired,
+  setRows: PropTypes.func.isRequired,  setCols: PropTypes.func.isRequired,
+  seed: PropTypes.number.isRequired,  setSeed: PropTypes.func.isRequired,
+  showSeed: PropTypes.bool.isRequired, setShowSeed: PropTypes.func.isRequired,
   onGenerate: PropTypes.func.isRequired,
-  generating: PropTypes.bool,
+  generating: PropTypes.bool, animateGen: PropTypes.bool,
+  setAnimateGen: PropTypes.func,
 };
 function SeedControl({ seed, setSeed, showSeed, setShowSeed, cycleSeed }) {
   return (
@@ -92,9 +94,7 @@ function SeedControl({ seed, setSeed, showSeed, setShowSeed, cycleSeed }) {
 }
 
 SeedControl.propTypes = {
-  seed: PropTypes.number.isRequired,
-  setSeed: PropTypes.func.isRequired,
-  showSeed: PropTypes.bool.isRequired,
-  setShowSeed: PropTypes.func.isRequired,
+  seed: PropTypes.number.isRequired, setSeed: PropTypes.func.isRequired,
+  showSeed: PropTypes.bool.isRequired, setShowSeed: PropTypes.func.isRequired,
   cycleSeed: PropTypes.func.isRequired,
 };
