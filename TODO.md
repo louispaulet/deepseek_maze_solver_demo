@@ -5,7 +5,7 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 ## Maze Generation
 
 - [x] Implement **Recursive Backtracking** (DFS-based) maze generator
-- [ ] Implement **Prim's algorithm** maze generator
+- [x] Implement **Prim's algorithm** maze generator
 - [ ] Implement **Kruskal's algorithm** maze generator
 - [ ] Add a maze config panel (width, height, seed, algorithm selector)
 - [ ] Add a "Generate Maze" button with loading/animating state
