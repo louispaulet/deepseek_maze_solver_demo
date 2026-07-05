@@ -22,8 +22,6 @@ describe('MazeSolver', () => {
     renderMazeSolver();
     expect(screen.getByText('Algorithm')).toBeInTheDocument();
     const select = screen.getByRole('combobox');
-    expect(select).toBeInTheDocument();
-    // Default is recursive-backtracking
     expect(select.value).toBe('recursive-backtracking');
   });
 
@@ -32,44 +30,45 @@ describe('MazeSolver', () => {
     expect(screen.getByText('Rows')).toBeInTheDocument();
     expect(screen.getByText('Columns')).toBeInTheDocument();
     const inputs = screen.getAllByRole('spinbutton');
-    // rows, cols, and seed input (when shown) — but seed is hidden by default
     expect(inputs.length).toBeGreaterThanOrEqual(2);
   });
 
   it('renders the Generate Maze button', () => {
     renderMazeSolver();
     const buttons = screen.getAllByText('Generate Maze');
-    // At least one button element among the matches
     expect(buttons.some((el) => el.tagName === 'BUTTON')).toBe(true);
   });
 
-  it('shows placeholder text when no maze is generated', () => {
+  it('does not show solver controls when no maze is generated', () => {
     renderMazeSolver();
-    expect(screen.getByText(/Select parameters and click/)).toBeInTheDocument();
+    expect(screen.queryByText(/Solve with Pathfinding/)).not.toBeInTheDocument();
   });
 
-  it('renders a canvas after clicking Generate Maze', () => {
+  it('shows solver controls after generating a maze', () => {
     renderMazeSolver();
-    const button = screen.getByRole('button', { name: 'Generate Maze' });
-    fireEvent.click(button);
-    // In jsdom, canvas renders but getContext returns null (handled gracefully)
-    const canvas = document.querySelector('canvas');
-    expect(canvas).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
+    expect(screen.getByRole('button', { name: 'Solve Maze' })).toBeInTheDocument();
+    expect(screen.getByText('BFS (Breadth-First)')).toBeInTheDocument();
   });
 
-  it('hides the placeholder after generating a maze', () => {
+  it('renders comparison canvases after generating and solving', () => {
     renderMazeSolver();
-    const button = screen.getByRole('button', { name: 'Generate Maze' });
-    fireEvent.click(button);
-    expect(screen.queryByText(/Select parameters and click/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Solve Maze' }));
+    const canvases = document.querySelectorAll('canvas');
+    expect(canvases.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('allows switching between algorithms', () => {
+  it('allows switching maze generation algorithms', () => {
     renderMazeSolver();
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 'prim' } });
     expect(select.value).toBe('prim');
+  });
+
+  it('solve button is enabled when maze exists and algos selected', () => {
+    renderMazeSolver();
     fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
-    expect(document.querySelector('canvas')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Solve Maze' })).not.toBeDisabled();
   });
 });

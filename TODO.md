@@ -27,16 +27,16 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 ## Comparison View
 
-- [ ] Create a split-screen or tabbed layout showing 2–4 algorithms side-by-side
-- [ ] Algorithm selector checkboxes — pick which ones to compare
-- [ ] Shared maze instance across all selected algorithms
+- [x] Create a split-screen or tabbed layout showing 2–4 algorithms side-by-side
+- [x] Algorithm selector checkboxes — pick which ones to compare
+- [x] Shared maze instance across all selected algorithms
 
 ## Animation & Controls
 
 - [ ] Implement a step-based animation loop (play/pause/step forward/reset)
 - [ ] Speed slider (ms per step)
-- [ ] Visual distinction between visited cells, frontier cells, and the final path
-- [ ] Stats panel (steps taken, path length, time elapsed) per algorithm
+- [x] Visual distinction between visited cells, frontier cells, and the final path
+- [x] Stats panel (steps taken, path length, time elapsed) per algorithm
 
 ## UI Polish
 
