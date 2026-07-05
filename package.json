@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"No tests configured yet\" && exit 0",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && cp public/CNAME dist/CNAME && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "keywords": ["maze", "pathfinding", "deepseek", "visualization"],
   "author": "Louis Paulet",
   "license": "MIT",
-  "homepage": "https://louispaulet.github.io/deepseek_maze_solver_demo",
+  "homepage": "http://maze-solver.thefrenchartist.dev",
   "dependencies": {
     "@vitejs/plugin-react": "^6.0.3",
     "react": "^19.2.7",

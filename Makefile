@@ -11,4 +11,6 @@ build:
 	npm run build
 
 deploy:
-	npm run deploy
+	npm run build
+	cp public/CNAME dist/CNAME
+	npx gh-pages -d dist
