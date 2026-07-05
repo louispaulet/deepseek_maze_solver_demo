@@ -81,23 +81,23 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
 
     const size = dynamicSize;
 
-    // Visited cells overlay
+    // Visited cells overlay (full cell, no gap)
     if (visitedOrder && visitedOrder.length > 0) {
       ctx.fillStyle = VISITED_COLOR;
       for (const { row, col } of visitedOrder) {
-        ctx.fillRect(col * size + 1, row * size + 1, size - 2, size - 2);
+        ctx.fillRect(col * size, row * size, size, size);
       }
     }
 
-    // Path overlay
+    // Path overlay (full cell, no gap)
     if (path && path.length > 0) {
       ctx.fillStyle = PATH_COLOR;
       for (const { row, col } of path) {
-        ctx.fillRect(col * size + 1, row * size + 1, size - 2, size - 2);
+        ctx.fillRect(col * size, row * size, size, size);
       }
     }
 
-    // Draw walls
+    // Draw walls on top of fills
     ctx.strokeStyle = WALL_COLOR;
     ctx.lineWidth = 2;
     for (let r = 0; r < rows; r++) {
@@ -114,13 +114,13 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
       }
     }
 
-    // Start cell (green)
+    // Start cell (green) — drawn after walls to stay visible
     ctx.fillStyle = START_COLOR;
-    ctx.fillRect(1, 1, size - 2, size - 2);
+    ctx.fillRect(0, 0, size, size);
 
-    // Goal cell (red)
+    // Goal cell (red) — drawn after walls to stay visible
     ctx.fillStyle = GOAL_COLOR;
-    ctx.fillRect((cols - 1) * size + 1, (rows - 1) * size + 1, size - 2, size - 2);
+    ctx.fillRect((cols - 1) * size, (rows - 1) * size, size, size);
   }, [grid, dynamicSize, rows, cols, width, height, visitedOrder, path]);
 
   // When a fixed cellSize is given, render the canvas directly to stay backward-compatible
