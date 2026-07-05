@@ -1,8 +1,11 @@
-.PHONY: up test build deploy
+.PHONY: up lint test build deploy
 
 up:
 	npm install
 	npm run dev
+
+lint:
+	npm run lint
 
 test:
 	npm test
