@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { PATHFINDING_ALGORITHMS } from '../algorithms/pathfindingConstants';
 
-export default function SolverControls({ selected, setSelected, onSolve, hasMaze }) {
+export default function SolverControls({ selected, setSelected, onSolve, hasMaze, solving }) {
   const toggle = (key) => {
     setSelected((prev) => {
       const next = new Set(prev);
@@ -40,10 +40,10 @@ export default function SolverControls({ selected, setSelected, onSolve, hasMaze
 
       <button
         onClick={onSolve}
-        disabled={!hasMaze || selected.size === 0}
+        disabled={!hasMaze || selected.size === 0 || solving}
         className="rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:bg-gray-700 disabled:text-gray-500 px-6 py-2.5 text-sm font-semibold text-white transition-colors"
       >
-        Solve Maze
+        {solving ? 'Solving…' : 'Solve Maze'}
       </button>
     </div>
   );
@@ -54,4 +54,5 @@ SolverControls.propTypes = {
   setSelected: PropTypes.func.isRequired,
   onSolve: PropTypes.func.isRequired,
   hasMaze: PropTypes.bool.isRequired,
+  solving: PropTypes.bool,
 };

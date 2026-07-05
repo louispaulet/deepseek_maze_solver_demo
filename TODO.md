@@ -42,7 +42,7 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 - [x] Responsive layout (works on desktop and tablet)
 - [x] Dark theme consistency (already started, extend to maze canvas)
-- [ ] Loading skeletons / placeholders while generating
+- [x] Loading skeletons / placeholders while generating
 - [ ] Toast/notification for errors (e.g., unsolvable maze)
 
 ## Testing

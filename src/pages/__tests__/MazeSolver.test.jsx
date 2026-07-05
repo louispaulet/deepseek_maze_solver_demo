@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import MazeSolver from '../MazeSolver';
 
@@ -11,7 +11,23 @@ function renderMazeSolver() {
   );
 }
 
+/** Click a button and flush the deferred setTimeout so state settles. */
+async function clickAndFlush(button) {
+  await act(async () => {
+    fireEvent.click(button);
+    vi.runAllTimers();
+  });
+}
+
 describe('MazeSolver', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('renders the page title', () => {
     renderMazeSolver();
     expect(screen.getByText('Maze')).toBeInTheDocument();
@@ -35,8 +51,16 @@ describe('MazeSolver', () => {
 
   it('renders the Generate Maze button', () => {
     renderMazeSolver();
-    const buttons = screen.getAllByText('Generate Maze');
-    expect(buttons.some((el) => el.tagName === 'BUTTON')).toBe(true);
+    expect(screen.getByRole('button', { name: 'Generate Maze' })).toBeInTheDocument();
+  });
+
+  it('shows loading skeleton while generating', () => {
+    renderMazeSolver();
+    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
+    // Timer hasn't fired yet — skeleton and disabled button should be visible
+    const skeleton = document.querySelector('.animate-pulse');
+    expect(skeleton).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Generating…' })).toBeDisabled();
   });
 
   it('does not show solver controls when no maze is generated', () => {
@@ -44,17 +68,17 @@ describe('MazeSolver', () => {
     expect(screen.queryByText(/Solve with Pathfinding/)).not.toBeInTheDocument();
   });
 
-  it('shows solver controls after generating a maze', () => {
+  it('shows solver controls after generating a maze', async () => {
     renderMazeSolver();
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
+    await clickAndFlush(screen.getByRole('button', { name: 'Generate Maze' }));
     expect(screen.getByRole('button', { name: 'Solve Maze' })).toBeInTheDocument();
     expect(screen.getByText('BFS (Breadth-First)')).toBeInTheDocument();
   });
 
-  it('renders comparison canvases after generating and solving', () => {
+  it('renders comparison canvases after generating and solving', async () => {
     renderMazeSolver();
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Solve Maze' }));
+    await clickAndFlush(screen.getByRole('button', { name: 'Generate Maze' }));
+    await clickAndFlush(screen.getByRole('button', { name: 'Solve Maze' }));
     const canvases = document.querySelectorAll('canvas');
     expect(canvases.length).toBeGreaterThanOrEqual(1);
   });
@@ -66,9 +90,9 @@ describe('MazeSolver', () => {
     expect(select.value).toBe('prim');
   });
 
-  it('solve button is enabled when maze exists and algos selected', () => {
+  it('solve button is enabled when maze exists and algos selected', async () => {
     renderMazeSolver();
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Maze' }));
+    await clickAndFlush(screen.getByRole('button', { name: 'Generate Maze' }));
     expect(screen.getByRole('button', { name: 'Solve Maze' })).not.toBeDisabled();
   });
 });
