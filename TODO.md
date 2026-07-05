@@ -7,23 +7,23 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 - [x] Implement **Recursive Backtracking** (DFS-based) maze generator
 - [x] Implement **Prim's algorithm** maze generator
 - [x] Implement **Kruskal's algorithm** maze generator
-- [ ] Add a maze config panel (width, height, seed, algorithm selector)
-- [ ] Add a "Generate Maze" button with loading/animating state
+- [x] Add a maze config panel (width, height, seed, algorithm selector)
+- [x] Add a "Generate Maze" button with loading/animating state
 
 ## Maze Rendering
 
-- [ ] Create a `<Maze />` component that renders the grid on an HTML5 `<canvas>`
-- [ ] Draw walls, passages, start cell, and goal cell with distinct colors
+- [x] Create a `<Maze />` component that renders the grid on an HTML5 `<canvas>`
+- [x] Draw walls, passages, start cell, and goal cell with distinct colors
 - [ ] Support dynamic resizing (canvas scales with container)
 - [ ] Animate maze generation step-by-step (optional toggle)
 
 ## Pathfinding Algorithms
 
-- [ ] Implement **BFS** (Breadth-First Search)
-- [ ] Implement **DFS** (Depth-First Search)
-- [ ] Implement **Dijkstra's algorithm**
-- [ ] Implement **A\*** (A-star) with configurable heuristic
-- [ ] Each algorithm returns the full step history (visited cells, final path)
+- [x] Implement **BFS** (Breadth-First Search)
+- [x] Implement **DFS** (Depth-First Search)
+- [x] Implement **Dijkstra's algorithm**
+- [x] Implement **A\*** (A-star) with configurable heuristic
+- [x] Each algorithm returns the full step history (visited cells, final path)
 
 ## Comparison View
 
@@ -47,14 +47,14 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 ## Testing
 
-- [ ] Unit tests for maze generators (validate solvability, correct dimensions)
-- [ ] Unit tests for pathfinding algorithms (validate path correctness, optimality for A*/Dijkstra)
+- [x] Unit tests for maze generators (validate solvability, correct dimensions)
+- [x] Unit tests for pathfinding algorithms (validate path correctness, optimality for A*/Dijkstra)
 - [ ] Component smoke tests (Maze, controls render without crashing)
 
 ## DevOps
 
-- [ ] Add Vitest as test runner (replace echo placeholder)
-- [ ] Add `make test` wired to `vitest run`
+- [x] Add Vitest as test runner (replace echo placeholder)
+- [x] Add `make test` wired to `vitest run`
 - [ ] CI via GitHub Actions (lint + test on push)
 
 ---
