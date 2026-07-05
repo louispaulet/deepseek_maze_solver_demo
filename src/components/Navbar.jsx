@@ -4,6 +4,7 @@ import { Grid3x3 } from 'lucide-react';
 const links = [
   { to: '/', label: 'Home' },
   { to: '/maze-solver', label: 'Maze Solver' },
+  { to: '/leaderboard', label: 'Leaderboard' },
   { to: '/about', label: 'About' },
 ];
 
