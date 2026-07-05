@@ -49,7 +49,7 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 - [x] Unit tests for maze generators (validate solvability, correct dimensions)
 - [x] Unit tests for pathfinding algorithms (validate path correctness, optimality for A*/Dijkstra)
-- [ ] Component smoke tests (Maze, controls render without crashing)
+- [x] Component smoke tests (Maze, controls render without crashing)
 
 ## DevOps
 
