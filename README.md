@@ -2,6 +2,8 @@
 
 The goal of this repo is to test the capabilities of **DeepSeek V4 Pro** by generating mazes and comparing pathfinding algorithms to solve them — all rendered in the browser, in realtime.
 
+**🔗 Live demo:** [maze-solver.thefrenchartist.dev](http://maze-solver.thefrenchartist.dev)
+
 ## Overview
 
 - **Maze Generation** — Procedurally generated mazes using algorithms like Recursive Backtracking, Prim's, and Kruskal's.
