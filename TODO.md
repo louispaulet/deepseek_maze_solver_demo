@@ -33,8 +33,8 @@ The MVP goal: a browser-based app that generates mazes and compares pathfinding 
 
 ## Animation & Controls
 
-- [ ] Implement a step-based animation loop (play/pause/step forward/reset)
-- [ ] Speed slider (ms per step)
+- [x] Implement a step-based animation loop (play/pause/step forward/reset)
+- [x] Speed slider (ms per step)
 - [x] Visual distinction between visited cells, frontier cells, and the final path
 - [x] Stats panel (steps taken, path length, time elapsed) per algorithm
 

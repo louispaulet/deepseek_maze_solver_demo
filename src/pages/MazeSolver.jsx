@@ -1,9 +1,11 @@
 import { useState, useCallback } from 'react';
 import { ALGORITHMS } from '../algorithms/constants';
 import { PATHFINDING_ALGORITHMS } from '../algorithms/pathfindingConstants';
+import useAnimation from '../hooks/useAnimation';
 import MazeControls from '../components/MazeControls';
 import MazeCanvas from '../components/MazeCanvas';
 import SolverControls from '../components/SolverControls';
+import AnimationControls from '../components/AnimationControls';
 
 export { ALGORITHMS };
 
@@ -17,10 +19,15 @@ export default function MazeSolver() {
   const [selectedAlgos, setSelectedAlgos] = useState(new Set(['bfs', 'astar']));
   const [results, setResults] = useState(null);
 
+  const maxStep = results
+    ? Math.max(...Object.values(results).map((r) => r.visitedOrder.length))
+    : 0;
+  const anim = useAnimation(maxStep);
+
   const handleGenerate = () => {
-    const { grid } = ALGORITHMS[algo].fn(rows, cols, seed);
-    setMazeGrid(grid);
+    setMazeGrid(ALGORITHMS[algo].fn(rows, cols, seed).grid);
     setResults(null);
+    anim.reset();
   };
 
   const handleSolve = useCallback(() => {
@@ -33,7 +40,8 @@ export default function MazeSolver() {
       newResults[key] = { visitedOrder, path, label: PATHFINDING_ALGORITHMS[key].label };
     }
     setResults(newResults);
-  }, [mazeGrid, selectedAlgos]);
+    anim.reset();
+  }, [mazeGrid, selectedAlgos]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const algoKeys = results ? Object.keys(results) : [];
   const gridCols = algoKeys.length <= 2 ? algoKeys.length : 2;
@@ -45,12 +53,9 @@ export default function MazeSolver() {
       </h1>
 
       <MazeControls
-        algo={algo} setAlgo={setAlgo}
-        rows={rows} setRows={setRows}
-        cols={cols} setCols={setCols}
-        seed={seed} setSeed={setSeed}
-        showSeed={showSeed} setShowSeed={setShowSeed}
-        onGenerate={handleGenerate}
+        algo={algo} setAlgo={setAlgo} rows={rows} setRows={setRows}
+        cols={cols} setCols={setCols} seed={seed} setSeed={setSeed}
+        showSeed={showSeed} setShowSeed={setShowSeed} onGenerate={handleGenerate}
       />
 
       {mazeGrid && (
@@ -60,31 +65,36 @@ export default function MazeSolver() {
         />
       )}
 
+      {results && (
+        <AnimationControls
+          isPlaying={anim.isPlaying} step={anim.step} maxStep={maxStep}
+          speed={anim.speed} onPlay={anim.play} onPause={anim.pause}
+          onStep={anim.setStep} onReset={anim.reset} onSpeedChange={anim.setSpeed}
+        />
+      )}
+
       {results ? (
-        <div
-          className="mt-6 grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}
-        >
+        <div className="mt-6 grid gap-4"
+          style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}>
           {algoKeys.map((key) => {
             const { visitedOrder, path, label } = results[key];
+            const visible = visitedOrder.slice(0, Math.min(anim.step, visitedOrder.length));
             return (
               <div key={key} className="flex flex-col items-center">
                 <span className="text-sm font-medium text-indigo-400 mb-2">{label}</span>
-                <MazeCanvas grid={mazeGrid} cellSize={14} visitedOrder={visitedOrder} path={path} />
+                <MazeCanvas grid={mazeGrid} cellSize={14}
+                  visitedOrder={visible} path={anim.isComplete ? path : []} />
                 <div className="flex gap-4 mt-1.5 text-xs text-gray-400">
-                  <span>Visited: {visitedOrder.length}</span>
-                  <span>Path: {path.length}</span>
+                  <span>Visited: {visible.length}/{visitedOrder.length}</span>
+                  <span>Path: {anim.isComplete ? path.length : '—'}</span>
                 </div>
-              </div>
-            );
+              </div>);
           })}
         </div>
-      ) : (
-        mazeGrid && !results && (
-          <div className="mt-6 rounded-xl border border-gray-800 bg-gray-900/50 p-8 text-center text-gray-500">
-            Select algorithms above and click <span className="text-emerald-400">Solve Maze</span>
-          </div>
-        )
+      ) : mazeGrid && (
+        <div className="mt-6 rounded-xl border border-gray-800 bg-gray-900/50 p-8 text-center text-gray-500">
+          Select algorithms above and click <span className="text-emerald-400">Solve Maze</span>
+        </div>
       )}
     </div>
   );
