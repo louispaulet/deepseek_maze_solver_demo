@@ -140,6 +140,12 @@ deepseek_maze_solver_demo/
 - **Testing**: Vitest with jsdom environment. Tests go in `__tests__/` next to the module they test. Run `make test`.
 - **Deployment**: `make deploy` runs a production build, copies `public/CNAME` into `dist/`, and publishes the `gh-pages` branch. The site is served at `maze-solver.thefrenchartist.dev`.
 
+## Benchmark Report
+
+This project was built as an experiment to evaluate **DeepSeek V4 Pro** as a coding agent. A detailed analysis of the development process — including a full commit timeline, catalog of all bugs and hurdles, and an assessment of the model's strengths and weaknesses — is available in the benchmark report:
+
+📄 **[benchmark_report.md](./benchmark_report.md)**
+
 ## License
 
 MIT
