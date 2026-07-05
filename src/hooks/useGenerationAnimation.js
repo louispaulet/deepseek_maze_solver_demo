@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { createGrid, applySteps } from '../algorithms/mazeUtils';
+import { applySteps } from '../algorithms/mazeUtils';
 import useAnimation from './useAnimation';
 
 /**

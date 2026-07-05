@@ -27,40 +27,31 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
   const cols = grid[0].length;
 
   const computeSize = useCallback(() => {
-    if (cellSize !== undefined) return cellSize;
     if (!containerRef.current) return FALLBACK_CELL_SIZE;
     const containerWidth = containerRef.current.clientWidth;
     if (containerWidth === 0) return FALLBACK_CELL_SIZE;
     const raw = Math.floor(containerWidth / cols);
     return Math.min(Math.max(raw, MIN_CELL_SIZE), MAX_CELL_SIZE);
-  }, [cellSize, cols]);
+  }, [cols]);
 
   // Track container width with ResizeObserver (fallback to static size if unavailable)
+  // Only track container resizes in auto-scaling mode (cellSize === undefined)
   useEffect(() => {
-    if (cellSize !== undefined) {
-      setDynamicSize(cellSize);
-      return;
-    }
+    if (cellSize !== undefined) return;
 
     const container = containerRef.current;
     if (!container) return;
 
-    if (typeof ResizeObserver === 'undefined') {
-      setDynamicSize(computeSize());
-      return;
-    }
+    if (typeof ResizeObserver === 'undefined') return;
 
-    const observer = new ResizeObserver(() => {
-      setDynamicSize(computeSize());
-    });
+    const observer = new ResizeObserver(() => setDynamicSize(computeSize()));
     observer.observe(container);
-    setDynamicSize(computeSize());
-
     return () => observer.disconnect();
   }, [computeSize, cellSize]);
 
-  const width = cols * dynamicSize;
-  const height = rows * dynamicSize;
+  const size = cellSize !== undefined ? cellSize : dynamicSize;
+  const width = cols * size;
+  const height = rows * size;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -78,8 +69,6 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     // Background
     ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, width, height);
-
-    const size = dynamicSize;
 
     // Visited cells overlay (full cell, no gap)
     if (visitedOrder && visitedOrder.length > 0) {
@@ -121,7 +110,7 @@ export default function MazeCanvas({ grid, cellSize, visitedOrder, path }) {
     // Goal cell (red) — drawn after walls to stay visible
     ctx.fillStyle = GOAL_COLOR;
     ctx.fillRect((cols - 1) * size, (rows - 1) * size, size, size);
-  }, [grid, dynamicSize, rows, cols, width, height, visitedOrder, path]);
+  }, [grid, size, rows, cols, width, height, visitedOrder, path]);
 
   // When a fixed cellSize is given, render the canvas directly to stay backward-compatible
   if (cellSize !== undefined) {
