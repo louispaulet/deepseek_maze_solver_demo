@@ -1,0 +1,34 @@
+{
+  "name": "deepseek_maze_solver_demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Testing DeepSeek V4 Pro capabilities by generating mazes and comparing pathfinding algorithms in realtime.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"No tests configured yet\" && exit 0",
+    "deploy": "vite build && gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louispaulet/deepseek_maze_solver_demo.git"
+  },
+  "keywords": ["maze", "pathfinding", "deepseek", "visualization"],
+  "author": "Louis Paulet",
+  "license": "MIT",
+  "homepage": "https://louispaulet.github.io/deepseek_maze_solver_demo",
+  "dependencies": {
+    "@vitejs/plugin-react": "^6.0.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
+    "vite": "^8.1.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "gh-pages": "^6.3.0",
+    "tailwindcss": "^4.3.2"
+  }
+}
